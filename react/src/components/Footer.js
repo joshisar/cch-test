@@ -6,24 +6,9 @@ const Footer = () => {
     <footer>
       <p>Copyright &copy; 2022</p>
       <p> &nbsp;</p>
-      <Link
-        to={{
-          pathname: 'https://docs.settlemint.com/docs/privacy-policy',
-        }}
-        target="_blank"
-      >
-        Privacy
-      </Link>
+      <Link to="/privacy">Privacy Policy</Link>
       <p> &nbsp;</p>
-      <Link
-        to={{
-          pathname:
-            'https://docs.settlemint.com/docs/terms-of-service',
-        }}
-        target="_blank"
-      >
-        Terms & Conditions
-      </Link>
+      <Link to="/terms">Terms of Service</Link>
     </footer>
   );
 };

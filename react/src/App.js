@@ -7,18 +7,21 @@ function App() {
   return (
     <Router>
       <div className="container">
-        <Header title="Claim NFTs" />
+        <Header title="CCH NFTs APP" />
+
         <Route
           path="/"
           exact
           render={(props) => (
             <>
-              <h4>Welcome to CCH-NFTs</h4>
+              <h4>Welcome to the world of NFTs</h4>
+              <br></br>
+              <h4>This app is Powered by Settlemint</h4>
             </>
           )}
         />
-        <Footer />
       </div>
+      <Footer />
     </Router>
   );
 }
