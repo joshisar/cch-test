@@ -5,7 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "start-prod": "pm2 start index.js && pm2 startup ubuntu",
+    "restart-prod": "pm2 restart index.js",
+    "stop-prod": "pm2 stop index.js",
+    "view-logs-prod": "pm2 logs",
+    "flush-logs-prod": "pm2 flush"
   },
   "author": "Sarthak Joshi",
   "license": "ISC",
