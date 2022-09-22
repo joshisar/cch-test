@@ -1,28 +1,35 @@
 // @ts-nocheck
 import Header from './components/Header';
-import Footer from './components/Footer';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { GlobalStyle } from './GlobalStyle';
+import Home from './components/Home';
+import Privacy from './components/Privacy';
+import Terms from './components/Terms';
+import Footer from './components/Footer';
+import { useLocation } from 'react-router-dom';
 
 function App() {
   return (
     <Router>
-      <div className="container">
-        <Header title="CCH NFTs APP" />
-
-        <Route
-          path="/"
-          exact
-          render={(props) => (
-            <>
-              <h4>Welcome to the world of NFTs</h4>
-              <br></br>
-              <h4>This app is Powered by Settlemint</h4>
-            </>
-          )}
-        />
-      </div>
+      <Header />
+      <Route path="/" element={<Home />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
+      <GlobalStyle />
+      <Inner />
       <Footer />
     </Router>
+  );
+}
+
+function Inner() {
+  const location = useLocation();
+  return (
+    <>
+      {location.pathname === '/' && <Home />}
+      {location.pathname === '/privacy' && <Privacy />}
+      {location.pathname === '/terms' && <Terms />}
+    </>
   );
 }
 

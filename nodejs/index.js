@@ -10,6 +10,7 @@ const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const sessions = require('express-session');
 const { router } = require('./router');
 const { PORT_APP } = require('./constants');
 
@@ -25,6 +26,19 @@ async function main() {
   );
   app.use(express.urlencoded({ extended: true })); // to support URL-encoded bodies
   app.use(cookieParser());
+  // creating 24 hours from milliseconds
+  const oneDay = 1000 * 60 * 60 * 24;
+  //session middleware
+  app.use(
+    sessions({
+      secret: 'thisismysecrctekeyfhrgfgrfrty84fwir767',
+      saveUninitialized: true,
+      cookie: { maxAge: oneDay },
+      resave: true,
+    })
+  );
+
+  // handlers & routers
   app.get('/', async (req, res) => {
     res.send('<h1>welcome<h1>');
   });
@@ -46,8 +60,6 @@ async function main() {
   server.listen(PORT_APP, async function () {
     console.log(`[INFO] application listening on port ${PORT_APP}`);
   });
-
-  console.log(`[INFO] application is quitting`);
 }
 
 main();

@@ -1,8 +1,9 @@
 const { default: axios } = require('axios');
+// const crypto = require('crypto');
 const { CLIENT_ID, CLIENT_SECRET } = require('../constants');
 const { generateHash } = require('../utils');
 
-// SayHello ------------------------------------------------------------------------------------------------
+// sayHello ------------------------------------------------------------------------------------------------
 exports.sayHello = async (req, res) => {
   try {
     console.log(`[INFO] GET Handler SayHello`);
@@ -21,17 +22,18 @@ exports.sayHello = async (req, res) => {
   }
 };
 
-// SayHello ------------------------------------------------------------------------------------------------
+// sendAuthReqToGoogle ------------------------------------------------------------------------------------------------
 exports.sendAuthReqToGoogle = async (req, res) => {
   try {
     console.log(`[INFO] sendAuthReqToGoogle`);
-    console.log(`[INFO] request : ${req}`);
+    console.log('[INFO] req.session.id : ', req.session.id);
     // csrf state for secured session
     const createCsrfState = () => {
-      const hsh = generateHash(req.session.session_key);
+      const hsh = generateHash(req.session.id);
       return hsh.substring(16);
     };
     const csrfState = createCsrfState();
+    console.log('[INFO] csrfState : ', csrfState);
     res.cookie('csrfState', csrfState, { maxAge: 60000 });
 
     // url for google auth
@@ -47,6 +49,10 @@ exports.sendAuthReqToGoogle = async (req, res) => {
 
     // redirect to the above created url
     console.log(`[INFO] google oauth url : ${url}`);
+    // test-local : no redirect to google-auth
+    // res.status(200).json({
+    //   msg: 'ok',
+    // });
     res.redirect(url);
   } catch (error) {
     res.status(500).json({
@@ -58,7 +64,7 @@ exports.sendAuthReqToGoogle = async (req, res) => {
   }
 };
 
-// SayHello ------------------------------------------------------------------------------------------------
+// receiveGoogleAuthCode ------------------------------------------------------------------------------------------------
 exports.receiveGoogleAuthCode = async (req, res) => {
   try {
     console.log(`[INFO] receiveGoogleAuthCode`);
@@ -66,7 +72,7 @@ exports.receiveGoogleAuthCode = async (req, res) => {
 
     // check csrf state
     const createCsrfState = () => {
-      const hsh = generateHash(req.session.session_key);
+      const hsh = generateHash(req.session.id);
       return hsh.substring(16);
     };
     const csrfState = createCsrfState();
@@ -87,7 +93,7 @@ exports.receiveGoogleAuthCode = async (req, res) => {
     url += '&grant_type=authorization_code';
 
     const resp = await axios.post(url);
-    console.log(`resp : ${resp}`);
+    console.log('resp : ', resp);
   } catch (error) {
     res.status(500).json({
       error: error.toString(),
